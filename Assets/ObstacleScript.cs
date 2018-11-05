@@ -13,7 +13,7 @@ public class ObstacleScript : MonoBehaviour {
     // Use this for initialization
     void Start () {
         obsTF = GetComponent<Transform>();
-        leftEdge = -10f;
+        leftEdge = -16f;
     }
 	
 	// Update is called once per frame

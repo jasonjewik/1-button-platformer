@@ -28,8 +28,8 @@ public class PlatformScript : MonoBehaviour {
         platformCol = GetComponent<Collider2D>();
 
         createdPlatform = false;
-        leftEdge = -10f;
-        rightEdge = 10f;
+        leftEdge = -16f;
+        rightEdge = 16f;
 	}
 	
 	// Update is called once per frame

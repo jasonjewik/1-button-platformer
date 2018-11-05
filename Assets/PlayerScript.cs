@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class PlayerScript : MonoBehaviour {
 
     public float jumpForce;
+    public float groundSlamForce;
 
     private Rigidbody2D playerRB2D;
 
@@ -41,9 +42,15 @@ public class PlayerScript : MonoBehaviour {
         {
             playerRB2D.velocity = Vector2.up * jumpForce;
             extraJumps--;
-        } else if (Input.GetKeyDown(KeyCode.Space) && extraJumps == 0 && isGrounded)
+        } else if (Input.GetKeyDown(KeyCode.Space) && extraJumps == 0)
         {
-            playerRB2D.velocity = Vector2.up * jumpForce;
+            if (isGrounded)
+            {
+                playerRB2D.velocity = Vector2.up * jumpForce;
+            } else
+            {
+                playerRB2D.velocity = Vector2.down * groundSlamForce;
+            }
         }
     }
 
