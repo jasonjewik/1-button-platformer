@@ -24,11 +24,14 @@ public class PlayerScript : MonoBehaviour {
 
     public GameObject gameOver;
 
+    private Animator anim;
+
     // Use this for initialization
     void Start()
     {
         extraJumps = extraJumpsValue;
         playerRB2D = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
         spawnObstacles = false;
         playGame = true;
 
@@ -67,6 +70,7 @@ public class PlayerScript : MonoBehaviour {
             playerRB2D.velocity = Vector2.zero;
             playerRB2D.gravityScale = 0;
             gameOver.GetComponent<Text>().enabled = true;
+            anim.enabled = false;
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
