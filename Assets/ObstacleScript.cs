@@ -10,6 +10,8 @@ public class ObstacleScript : MonoBehaviour {
 
     private float leftEdge;
 
+    GameObject player;
+
     // Use this for initialization
     void Start () {
         obsTF = GetComponent<Transform>();
@@ -18,18 +20,26 @@ public class ObstacleScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        pos = obsTF.position;
-
-        if (pos.x < leftEdge)
+        if (player.GetComponent<PlayerScript>().getGameState())
         {
-            GameObject.Destroy(this.gameObject);
-        }
+            pos = obsTF.position;
 
-        obsTF.position = new Vector2(pos.x - speed * Time.deltaTime, pos.y);
+            if (pos.x < leftEdge)
+            {
+                GameObject.Destroy(this.gameObject);
+            }
+
+            obsTF.position = new Vector2(pos.x - speed * Time.deltaTime, pos.y);
+        }
     }
 
     public void SetObsSpeed(float speedValue)
     {
         speed = speedValue;
+    }
+
+    public void SetPlayer(GameObject p)
+    {
+        player = p;
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerScript : MonoBehaviour {
 
@@ -19,6 +20,9 @@ public class PlayerScript : MonoBehaviour {
     private int extraJumps;
 
     private bool spawnObstacles;
+    private bool playGame;
+
+    public GameObject gameOver;
 
     // Use this for initialization
     void Start()
@@ -26,6 +30,7 @@ public class PlayerScript : MonoBehaviour {
         extraJumps = extraJumpsValue;
         playerRB2D = GetComponent<Rigidbody2D>();
         spawnObstacles = false;
+        playGame = true;
 
         Invoke("SetSpawnObstacles", 2);
     }
@@ -33,23 +38,39 @@ public class PlayerScript : MonoBehaviour {
     // Called every frame
     private void Update()
     {
-        if (isGrounded)
-        {
-            extraJumps = extraJumpsValue;
-        }
-        
-        if (Input.GetKeyDown(KeyCode.Space) && extraJumps > 0)
-        {
-            playerRB2D.velocity = Vector2.up * jumpForce;
-            extraJumps--;
-        } else if (Input.GetKeyDown(KeyCode.Space) && extraJumps == 0)
+        if (playGame)
         {
             if (isGrounded)
             {
-                playerRB2D.velocity = Vector2.up * jumpForce;
-            } else
+                extraJumps = extraJumpsValue;
+            }
+
+            if (Input.GetKeyDown(KeyCode.Space) && extraJumps > 0)
             {
-                playerRB2D.velocity = Vector2.down * groundSlamForce;
+                playerRB2D.velocity = Vector2.up * jumpForce;
+                extraJumps--;
+            }
+            else if (Input.GetKeyDown(KeyCode.Space) && extraJumps == 0)
+            {
+                if (isGrounded)
+                {
+                    playerRB2D.velocity = Vector2.up * jumpForce;
+                }
+                else
+                {
+                    playerRB2D.velocity = Vector2.down * groundSlamForce;
+                }
+            }
+        }
+        else
+        {
+            playerRB2D.velocity = Vector2.zero;
+            playerRB2D.gravityScale = 0;
+            gameOver.GetComponent<Text>().enabled = true;
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
         }
     }
@@ -64,7 +85,7 @@ public class PlayerScript : MonoBehaviour {
     {
         if (collision.gameObject.CompareTag("Obstacle"))
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            playGame = false;
         }
     }
 
@@ -76,5 +97,10 @@ public class PlayerScript : MonoBehaviour {
     public void SetSpawnObstacles()
     {
         spawnObstacles = true;
+    }
+
+    public bool getGameState()
+    {
+        return playGame;
     }
 }

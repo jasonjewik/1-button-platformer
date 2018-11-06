@@ -34,46 +34,51 @@ public class PlatformScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        pos = platformTF.position;
-        xBounds = platformCol.bounds.size.x;
-        yBounds = platformCol.bounds.size.y;
-
-        if (!createdPlatform && pos.x < rightEdge)
+        if (player.GetComponent<PlayerScript>().getGameState())
         {
-            newPlatform = Instantiate(platform, new Vector2(pos.x + xBounds - speed * Time.deltaTime, pos.y), new Quaternion());
-            newPlatform.name = "Platform";
+            pos = platformTF.position;
+            xBounds = platformCol.bounds.size.x;
+            yBounds = platformCol.bounds.size.y;
 
-            if (Random.value < obsSpawnChance/100)
+            if (!createdPlatform && pos.x < rightEdge)
             {
-                if (GameObject.FindGameObjectWithTag("Player"))
+                newPlatform = Instantiate(platform, new Vector2(pos.x + xBounds - speed * Time.deltaTime, pos.y), new Quaternion());
+                newPlatform.name = "Platform";
+
+                if (Random.value < obsSpawnChance / 100)
                 {
-                    if (player.GetComponent<PlayerScript>().GetSpawnObstacles())
+                    if (GameObject.FindGameObjectWithTag("Player"))
                     {
-                        int obsType = Mathf.RoundToInt(Random.Range(0, 1f));
-                        newObstacle = Instantiate(obstacle[obsType], new Vector2(pos.x + Random.Range(-xBounds / 2, xBounds / 2), pos.y + yBounds), new Quaternion());
-                        if (obsType == 0)
+                        if (player.GetComponent<PlayerScript>().GetSpawnObstacles())
                         {
-                            newObstacle.name = "Obstacle";
-                            newObstacle.GetComponent<ObstacleScript>().SetObsSpeed(speed);
-                        } else if (obsType == 1)
-                        {
-                            newObstacle.name = "Flying Obstacle";
-                            newObstacle.transform.position = new Vector2(pos.x, Random.Range(pos.y + 1, pos.y + 3));
-                            newObstacle.GetComponent<ObstacleScript>().SetObsSpeed(Random.Range(speed * 1.5f, speed * 2));
+                            int obsType = Mathf.RoundToInt(Random.Range(0, 1f));
+                            newObstacle = Instantiate(obstacle[obsType], new Vector2(pos.x + Random.Range(-xBounds / 2, xBounds / 2), pos.y + yBounds), new Quaternion());
+                            if (obsType == 0)
+                            {
+                                newObstacle.name = "Obstacle";
+                                newObstacle.GetComponent<ObstacleScript>().SetObsSpeed(speed);
+                                newObstacle.GetComponent<ObstacleScript>().SetPlayer(player);
+                            }
+                            else if (obsType == 1)
+                            {
+                                newObstacle.name = "Flying Obstacle";
+                                newObstacle.transform.position = new Vector2(pos.x, Random.Range(pos.y + 1, pos.y + 3));
+                                newObstacle.GetComponent<ObstacleScript>().SetObsSpeed(Random.Range(speed * 1.5f, speed * 2));
+                                newObstacle.GetComponent<ObstacleScript>().SetPlayer(player);
+                            }
                         }
                     }
                 }
+
+                createdPlatform = true;
             }
 
-            createdPlatform = true;
+            if (pos.x < leftEdge)
+            {
+                GameObject.Destroy(this.gameObject);
+            }
+
+            platformTF.position = new Vector2(pos.x - speed * Time.deltaTime, pos.y);
         }
-
-        if (pos.x < leftEdge)
-        {
-            GameObject.Destroy(this.gameObject);
-        }
-
-        platformTF.position = new Vector2(pos.x - speed * Time.deltaTime, pos.y);
-
 	}
 }
