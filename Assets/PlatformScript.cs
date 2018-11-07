@@ -9,6 +9,7 @@ public class PlatformScript : MonoBehaviour {
     public GameObject[] obstacle = new GameObject[2];
     private GameObject newObstacle;
     public float speed = 5.0f;
+    public float[] speedMultiplers = { 1.5f, 2.0f };
     [Tooltip("Percent chance that the next platform will come with an obstacle. Number between 0 and 100.")]
     public float obsSpawnChance = 50;
 
@@ -63,7 +64,7 @@ public class PlatformScript : MonoBehaviour {
                             {
                                 newObstacle.name = "Flying Obstacle";
                                 newObstacle.transform.position = new Vector2(pos.x, Random.Range(pos.y + 1, pos.y + 3));
-                                newObstacle.GetComponent<ObstacleScript>().SetObsSpeed(Random.Range(speed * 1.5f, speed * 2));
+                                newObstacle.GetComponent<ObstacleScript>().SetObsSpeed(Random.Range(speed * speedMultiplers[0], speed * speedMultiplers[1]));
                                 newObstacle.GetComponent<ObstacleScript>().SetPlayer(player);
                             }
                         }

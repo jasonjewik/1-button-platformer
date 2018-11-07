@@ -13,11 +13,15 @@ public class PlayerScript : MonoBehaviour {
 
     private bool isGrounded;
     public Transform groundCheck;
-    public float checkRadius;
+    public float groundCheckRadius;
+    public float groundSlamCheckRadius;
     public LayerMask whatIsGround;
+    public LayerMask whatIsFlyingObstacle;
+    private Collider2D flyingObsCol;
 
     public int extraJumpsValue;
     private int extraJumps;
+    private bool groundSlamming;
 
     private bool spawnObstacles;
     private bool playGame;
@@ -30,6 +34,7 @@ public class PlayerScript : MonoBehaviour {
     void Start()
     {
         extraJumps = extraJumpsValue;
+        groundSlamming = false;
         playerRB2D = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         spawnObstacles = false;
@@ -45,11 +50,13 @@ public class PlayerScript : MonoBehaviour {
         {
             if (isGrounded)
             {
+                groundSlamming = false;
                 extraJumps = extraJumpsValue;
             }
 
             if (Input.GetKeyDown(KeyCode.Space) && extraJumps > 0)
             {
+                groundSlamming = false;
                 playerRB2D.velocity = Vector2.up * jumpForce;
                 extraJumps--;
             }
@@ -57,10 +64,12 @@ public class PlayerScript : MonoBehaviour {
             {
                 if (isGrounded)
                 {
+                    groundSlamming = false;
                     playerRB2D.velocity = Vector2.up * jumpForce;
                 }
                 else
                 {
+                    groundSlamming = true;
                     playerRB2D.velocity = Vector2.down * groundSlamForce;
                 }
             }
@@ -82,10 +91,16 @@ public class PlayerScript : MonoBehaviour {
     // For physics-related stuff
     private void FixedUpdate()
     {
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, checkRadius, whatIsGround);
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, whatIsGround);
+        flyingObsCol = Physics2D.OverlapCircle(groundCheck.position, groundSlamCheckRadius, whatIsFlyingObstacle);
+
+        if (groundSlamming && flyingObsCol)
+        {
+            GameObject.Destroy(flyingObsCol.gameObject);
+        }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionStay2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Obstacle"))
         {
