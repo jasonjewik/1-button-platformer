@@ -93,7 +93,7 @@ public class PlayerScript : MonoBehaviour {
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, whatIsGround);
         flyingObsCol = Physics2D.OverlapCircle(groundCheck.position, groundSlamCheckRadius, whatIsFlyingObstacle);
-
+  
         if (groundSlamming && flyingObsCol)
         {
             GameObject.Destroy(flyingObsCol.gameObject);

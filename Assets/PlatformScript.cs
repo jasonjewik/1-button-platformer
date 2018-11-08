@@ -12,6 +12,11 @@ public class PlatformScript : MonoBehaviour {
     public float[] speedMultiplers = { 1.5f, 2.0f };
     [Tooltip("Percent chance that the next platform will come with an obstacle. Number between 0 and 100.")]
     public float obsSpawnChance = 50;
+    [Tooltip("Percent chance that the obstacle spawned will be a ground obstacle. Number between 0 and 100.")]
+    public float groundObsChance = 80;
+    [Tooltip("Percent chance that the obstacle spawned will be a flying obstacle. Number between 0 and 100.")]
+    public float flyingObsChance = 20;
+    private int obsType = -1;
 
     private Transform platformTF;
     private Vector3 pos;
@@ -52,7 +57,15 @@ public class PlatformScript : MonoBehaviour {
                     {
                         if (player.GetComponent<PlayerScript>().GetSpawnObstacles())
                         {
-                            int obsType = Mathf.RoundToInt(Random.Range(0, 1f));
+                            float obsNum = Random.value;
+                            if (obsNum <= groundObsChance / 100)
+                            {
+                                obsType = 0;
+                            } 
+                            else if (obsNum <= (groundObsChance + flyingObsChance) / 100)
+                            {
+                                obsType = 1;
+                            }
                             newObstacle = Instantiate(obstacle[obsType], new Vector2(pos.x + Random.Range(-xBounds / 2, xBounds / 2), pos.y + yBounds), new Quaternion());
                             if (obsType == 0)
                             {

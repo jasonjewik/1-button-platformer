@@ -87,6 +87,8 @@ MonoBehaviour:
   - 1.5
   - 2
   obsSpawnChance: 10
+  groundObsChance: 80
+  flyingObsChance: 20
   player: {fileID: 0}
 --- !u!212 &212484864157834768
 SpriteRenderer:
