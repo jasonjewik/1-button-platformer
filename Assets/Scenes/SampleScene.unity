@@ -235,7 +235,7 @@ Prefab:
     - target: {fileID: 114261488378868460, guid: e7bd1e76886a6c64abbf43f0ba56da1d,
         type: 2}
       propertyPath: obsSpawnChance
-      value: 10
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7bd1e76886a6c64abbf43f0ba56da1d, type: 2}
