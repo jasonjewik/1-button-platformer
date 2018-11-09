@@ -13,7 +13,7 @@ public class CloudScript : MonoBehaviour {
 
     private void Start()
     {
-        speed = Random.Range(0.2f, 0.7f); ;
+        speed = Random.Range(0.7f, 1.0f); ;
         cloudTF = GetComponent<Transform>();
         player = GameObject.FindGameObjectWithTag("Player");   
     }

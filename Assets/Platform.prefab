@@ -86,7 +86,7 @@ MonoBehaviour:
   speedMultiplers:
   - 1.5
   - 2
-  obsSpawnChance: 7
+  obsSpawnChance: 10
   groundObsChance: 80
   flyingObsChance: 20
   player: {fileID: 0}
