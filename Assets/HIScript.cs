@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class HIScript : MonoBehaviour {
 
     Text scoreText;
-    private static int score;
+    private static int score = 0;
 
     // Use this for initialization
     void Start () {

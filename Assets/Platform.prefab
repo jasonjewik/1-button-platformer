@@ -82,6 +82,9 @@ MonoBehaviour:
   obstacle:
   - {fileID: 1565032530099638, guid: 38e528ea5087366418146aec73ba1eeb, type: 2}
   - {fileID: 1313137778787848, guid: 6363a123fca2cd74bb1ccca6ca079f82, type: 2}
+  flyingRange:
+  - 1
+  - 2
   speed: 15
   speedMultiplers:
   - 1.5
@@ -89,7 +92,6 @@ MonoBehaviour:
   obsSpawnChance: 10
   groundObsChance: 80
   flyingObsChance: 20
-  player: {fileID: 0}
 --- !u!212 &212484864157834768
 SpriteRenderer:
   m_ObjectHideFlags: 1

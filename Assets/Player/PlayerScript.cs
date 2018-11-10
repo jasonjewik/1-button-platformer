@@ -6,27 +6,30 @@ using UnityEngine.UI;
 
 public class PlayerScript : MonoBehaviour {
 
+    [Tooltip("How high the player will jump.")]
     public float jumpForce;
+    [Tooltip("How quickly the player will return to the ground.")]
     public float groundSlamForce;
 
     private Rigidbody2D playerRB2D;
+    private Collider2D playerCol2D;
 
     private bool isGrounded;
     public Transform groundCheck;
     public float groundCheckRadius;
-    public float groundSlamCheckRadius;
     public LayerMask whatIsGround;
-    public LayerMask whatIsFlyingObstacle;
-    private Collider2D flyingObsCol;
 
+    [Tooltip("How many times the player can jump while airborne.")]
     public int extraJumpsValue;
     private int extraJumps;
     private bool groundSlamming;
 
-    private bool spawnObstacles;
-    private bool playGame;
+    private bool spawnObstacles = false;
+    private bool playGame = true;
 
     public GameObject gameOver;
+    public GameObject Score;
+    public int bonusPoints = 100;
 
     private Animator anim;
 
@@ -35,38 +38,44 @@ public class PlayerScript : MonoBehaviour {
     {
         extraJumps = extraJumpsValue;
         groundSlamming = false;
-        playerRB2D = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
-        spawnObstacles = false;
-        playGame = true;
 
-        Invoke("SetSpawnObstacles", 2);
+        playerRB2D = GetComponent<Rigidbody2D>();
+        playerCol2D = GetComponent<Collider2D>();
+        anim = GetComponent<Animator>();
+
+        Invoke("StartSpawningObstacles", 2);
     }
 
     // Called every frame
     private void Update()
     {
+        // Run only if player hasn't died
         if (playGame)
         {
+            // If player is on the ground, reset jumps
             if (isGrounded)
             {
                 groundSlamming = false;
                 extraJumps = extraJumpsValue;
             }
 
+            // Jump when space is pressed and extra jumps is greater than 0
             if (Input.GetKeyDown(KeyCode.Space) && extraJumps > 0)
             {
                 groundSlamming = false;
                 playerRB2D.velocity = Vector2.up * jumpForce;
                 extraJumps--;
             }
+            // If space is pressed and extra jumps is 0...
             else if (Input.GetKeyDown(KeyCode.Space) && extraJumps == 0)
             {
+                // ...and the player is on the ground, do a regular jump
                 if (isGrounded)
                 {
                     groundSlamming = false;
                     playerRB2D.velocity = Vector2.up * jumpForce;
                 }
+                // ...and the player is airborne, ground slam instead
                 else
                 {
                     groundSlamming = true;
@@ -75,12 +84,10 @@ public class PlayerScript : MonoBehaviour {
             }
         }
         else
-        {
-            playerRB2D.velocity = Vector2.zero;
-            playerRB2D.gravityScale = 0;
+        {            
             gameOver.GetComponent<Text>().enabled = true;
-            anim.enabled = false;
 
+            // Reload game upon pressing space
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -91,20 +98,29 @@ public class PlayerScript : MonoBehaviour {
     // For physics-related stuff
     private void FixedUpdate()
     {
+        // Checks to see if the player is on the ground
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, whatIsGround);
-        flyingObsCol = Physics2D.OverlapCircle(groundCheck.position, groundSlamCheckRadius, whatIsFlyingObstacle);
-  
-        if (groundSlamming && flyingObsCol)
-        {
-            GameObject.Destroy(flyingObsCol.gameObject);
-        }
     }
 
-    private void OnCollisionStay2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Obstacle"))
         {
-            playGame = false;
+            if (!groundSlamming)
+            {
+                // Stops player movement and animation upon death
+                Rigidbody2D.Destroy(playerRB2D);
+                anim.enabled = false;
+
+                playGame = false;
+            } else if (groundSlamming && collision.gameObject.name == "Flying Obstacle")
+            {
+                // Gives the player an extra jump
+                playerRB2D.velocity = Vector2.up * jumpForce;
+                // Increase score
+                Score.GetComponent<ScoreScript>().addToScore(bonusPoints);
+                GameObject.Destroy(collision.gameObject);
+            }
         }
     }
 
@@ -113,7 +129,7 @@ public class PlayerScript : MonoBehaviour {
         return spawnObstacles;
     }
 
-    public void SetSpawnObstacles()
+    public void StartSpawningObstacles()
     {
         spawnObstacles = true;
     }
@@ -121,5 +137,10 @@ public class PlayerScript : MonoBehaviour {
     public bool getGameState()
     {
         return playGame;
+    }
+
+    public bool getGroundSlamming()
+    {
+        return groundSlamming;
     }
 }

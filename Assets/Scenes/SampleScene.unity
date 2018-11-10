@@ -237,6 +237,16 @@ Prefab:
       propertyPath: obsSpawnChance
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 114261488378868460, guid: e7bd1e76886a6c64abbf43f0ba56da1d,
+        type: 2}
+      propertyPath: groundObsChance
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 114261488378868460, guid: e7bd1e76886a6c64abbf43f0ba56da1d,
+        type: 2}
+      propertyPath: flyingObsChance
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7bd1e76886a6c64abbf43f0ba56da1d, type: 2}
   m_IsPrefabAsset: 0
@@ -327,7 +337,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 212d7e313867cca4d8ffaf379b5c01bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 1296236273}
   HIscore: {fileID: 188019693}
 --- !u!1 &188019693
 GameObject:
@@ -776,8 +785,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1296236275}
   - component: {fileID: 1296236274}
-  - component: {fileID: 1296236278}
   - component: {fileID: 1296236276}
+  - component: {fileID: 1296236278}
   - component: {fileID: 1296236277}
   - component: {fileID: 1296236279}
   m_Layer: 0
@@ -860,7 +869,7 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_GravityScale: 5
   m_Material: {fileID: 6200000, guid: ebd47b2080147824488b69101a1c4fde, type: 2}
   m_Interpolate: 0
@@ -879,20 +888,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jumpForce: 15
-  groundSlamForce: 90
+  groundSlamForce: 60
   groundCheck: {fileID: 1472843017}
   groundCheckRadius: 0.1
-  groundSlamCheckRadius: 1
   whatIsGround:
     serializedVersion: 2
     m_Bits: 2147483648
-  whatIsFlyingObstacle:
-    serializedVersion: 2
-    m_Bits: 1024
   extraJumpsValue: 1
   gameOver: {fileID: 44078743}
---- !u!61 &1296236278
-BoxCollider2D:
+  Score: {fileID: 107221317}
+  bonusPoints: 100
+--- !u!60 &1296236278
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
@@ -913,9 +920,12 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.5, y: 1}
-  m_EdgeRadius: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.5, y: 0.5}
+      - {x: -0.25, y: 0.5}
+      - {x: -0.25, y: -0.5}
+      - {x: 0, y: -0.5}
 --- !u!95 &1296236279
 Animator:
   serializedVersion: 3

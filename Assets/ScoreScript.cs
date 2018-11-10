@@ -6,13 +6,14 @@ using UnityEngine.UI;
 public class ScoreScript : MonoBehaviour {
 
     Text scoreText;
-    private int score;
+    private int score = 0;
 
-    public GameObject player;
+    private GameObject player;
     public GameObject HIscore;
 
 	// Use this for initialization
 	void Start () {
+        player = GameObject.FindGameObjectWithTag("Player");
         scoreText = GetComponent<Text>();
         InvokeRepeating("incScore", 0, 0.1f);
     }
@@ -33,5 +34,10 @@ public class ScoreScript : MonoBehaviour {
     public void incScore()
     {
         score++;
+    }
+
+    public void addToScore(int num)
+    {
+        score += num;
     }
 }
