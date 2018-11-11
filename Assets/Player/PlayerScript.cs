@@ -12,7 +12,6 @@ public class PlayerScript : MonoBehaviour {
     public float groundSlamForce;
 
     private Rigidbody2D playerRB2D;
-    private Collider2D playerCol2D;
 
     private bool isGrounded;
     public Transform groundCheck;
@@ -40,7 +39,6 @@ public class PlayerScript : MonoBehaviour {
         groundSlamming = false;
 
         playerRB2D = GetComponent<Rigidbody2D>();
-        playerCol2D = GetComponent<Collider2D>();
         anim = GetComponent<Animator>();
 
         Invoke("StartSpawningObstacles", 2);
@@ -106,20 +104,21 @@ public class PlayerScript : MonoBehaviour {
     {
         if (collision.gameObject.CompareTag("Obstacle"))
         {
-            if (!groundSlamming)
-            {
-                // Stops player movement and animation upon death
-                Rigidbody2D.Destroy(playerRB2D);
-                anim.enabled = false;
-
-                playGame = false;
-            } else if (groundSlamming && collision.gameObject.name == "Flying Obstacle")
+            if (groundSlamming && collision.gameObject.name == "Flying Obstacle")
             {
                 // Gives the player an extra jump
                 playerRB2D.velocity = Vector2.up * jumpForce;
                 // Increase score
                 Score.GetComponent<ScoreScript>().addToScore(bonusPoints);
                 GameObject.Destroy(collision.gameObject);
+            }
+            else
+            {
+                // Stops player movement and animation upon death
+                Rigidbody2D.Destroy(playerRB2D);
+                anim.enabled = false;
+
+                playGame = false;
             }
         }
     }
