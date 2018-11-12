@@ -16,16 +16,17 @@ public class BackgroundScript : MonoBehaviour {
     private float leftEdge, rightEdge;
     private float xBounds;
 
-    public GameObject player;
+    private GameObject player;
 
     // Use this for initialization
     void Start () {
         bgTF = GetComponent<Transform>();
         bgCol = GetComponent<Collider2D>();
+        player = GameObject.FindGameObjectWithTag("Player");
 
         createdBG = false;
         leftEdge = -22f;
-        rightEdge = 22f;
+        rightEdge = 4f;
     }
 	
 	// Update is called once per frame

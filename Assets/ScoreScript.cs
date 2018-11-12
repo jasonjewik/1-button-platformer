@@ -28,16 +28,27 @@ public class ScoreScript : MonoBehaviour {
                 HIscore.GetComponent<HIScript>().setScore(score);
             }
         }
-        scoreText.text = score.ToString("D6");
+        else
+        {   
+            scoreText.text = score.ToString("D6");
+
+            // Increase speed over time
+            if (score % 100 == 0)
+            {
+                GameObject[] platforms = GameObject.FindGameObjectsWithTag("Platform");
+                foreach (GameObject platform in platforms)
+                {
+                    platform.GetComponent<PlatformScript>().incSpeed();
+                }
+
+                GameObject obsGen = GameObject.FindGameObjectWithTag("GameController");
+                obsGen.GetComponent<ObstacleGeneratorScript>().incSpeed();
+            }
+        }
 	}
 
     public void incScore()
     {
         score++;
-    }
-
-    public void addToScore(int num)
-    {
-        score += num;
     }
 }
