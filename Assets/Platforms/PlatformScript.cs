@@ -80,6 +80,6 @@ public class PlatformScript : MonoBehaviour {
 
     public void incSpeed()
     {
-        speed += 0.2f;
+        speed += 0.05f;
     }
 }

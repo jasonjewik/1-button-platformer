@@ -40,9 +40,15 @@ public class ScoreScript : MonoBehaviour {
                 {
                     platform.GetComponent<PlatformScript>().incSpeed();
                 }
+                GameObject[] obstacles = GameObject.FindGameObjectsWithTag("Obstacle");
+                foreach (GameObject obs in obstacles)
+                {
+                    obs.GetComponent<ObstacleScript>().incSpeed();
+                }
 
                 GameObject obsGen = GameObject.FindGameObjectWithTag("GameController");
                 obsGen.GetComponent<ObstacleGeneratorScript>().incSpeed();
+                obsGen.GetComponent<ObstacleGeneratorScript>().incSpawnRate();
             }
         }
 	}

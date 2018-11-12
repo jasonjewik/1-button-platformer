@@ -1025,12 +1025,12 @@ MonoBehaviour:
   - 15
   spawnTimes:
   - 0.2
-  - 2
+  - 3
   startTime: 2
   speed: 15
   speedMult:
   - 1.1
-  - 2.5
+  - 2.2
   distance:
   - 0
   - 4

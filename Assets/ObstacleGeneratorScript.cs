@@ -77,6 +77,14 @@ public class ObstacleGeneratorScript : MonoBehaviour {
 
     public void incSpeed()
     {
-        speed += 0.2f;
+        speed += 0.05f;
+    }
+
+    public void incSpawnRate()
+    {
+        if (spawnTimes[1] > 1)
+        {
+            spawnTimes[1] -= 0.05f;
+        }
     }
 }

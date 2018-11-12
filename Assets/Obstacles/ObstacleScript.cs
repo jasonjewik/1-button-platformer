@@ -42,4 +42,9 @@ public class ObstacleScript : MonoBehaviour {
     {
         speed = speedValue;
     }
+
+    public void incSpeed()
+    {
+        speed += 0.05f;
+    }
 }
